@@ -6,9 +6,34 @@
 
 // See README.md for license details.
 
-#include "stdint.h"
-#include "stdbool.h"
-// #include "stddef.h"
+// instead #include <stdint.h>
+typedef signed char int8_t;
+typedef unsigned char uint8_t;
+typedef short int16_t;
+typedef unsigned short uint16_t;
+typedef long int32_t;
+typedef unsigned long uint32_t;
+typedef unsigned char uint_fast8_t;
+typedef unsigned long size_t;
+
+
+// instead #include <stdbool.h>
+#ifndef __cplusplus
+#define bool _Bool
+#define true 1
+#define false 0
+#elif defined(__GNUC__) && !defined(__STRICT_ANSI__)
+/* Define _Bool as a GNU extension. */
+#define _Bool bool
+#if __cplusplus < 201103L
+/* For C++98, define bool, false, true as a GNU extension. */
+#define bool  bool
+#define false false
+#define true  true
+#endif
+#endif
+
+
 
 #ifdef __cplusplus
 extern "C" {
