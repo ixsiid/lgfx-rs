@@ -55,4 +55,7 @@ typedef unsigned long uint32_t;
     #define SIZE_MAX    ( ( size_t ) -1 )
 #endif
 
+typedef unsigned char uint_fast8_t;
+typedef unsigned long size_t;
+
 #endif /* FREERTOS_STDINT */
