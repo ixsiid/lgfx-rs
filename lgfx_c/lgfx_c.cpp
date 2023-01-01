@@ -9,8 +9,9 @@
 #include "lgfx_c.h"
 
 #define LGFX_USE_V1
-#define LGFX_AUTODETECT
+// #define LGFX_AUTODETECT
 #include <LovyanGFX.hpp>
+#include "LGFX_M5Stack_without_i2c.hpp"
 
 #include "__stdint.h"
 
@@ -64,6 +65,10 @@ void lgfx_c_set_rotation(lgfx_target_t target, uint_fast8_t rotation) {
     auto gfx = reinterpret_cast<LovyanGFX*>(target);
     gfx->setRotation(rotation);
 }
+void lgfx_c_set_brightness(lgfx_target_t target, uint_fast8_t brightness) {
+    auto gfx = reinterpret_cast<LGFX_Device*>(target);
+    gfx->setBrightness(brightness);
+}
 
 int32_t lgfx_c_width(lgfx_target_t target) {
     auto gfx = reinterpret_cast<LovyanGFX*>(target);
@@ -96,6 +101,10 @@ void lgfx_c_clear_rgb888(lgfx_target_t target, uint32_t color) {
     auto gfx = reinterpret_cast<LovyanGFX*>(target);
     gfx->clear(color);
 }
+void lgfx_c_clear_rgb565(lgfx_target_t target, uint16_t color) {
+    auto gfx = reinterpret_cast<LovyanGFX*>(target);
+    gfx->clear(color);
+}
 
 void lgfx_c_fill_rect_rgb332(lgfx_target_t target, int32_t left, int32_t top, int32_t width, int32_t height, uint8_t color) { 
     auto gfx = reinterpret_cast<LovyanGFX*>(target);
@@ -105,12 +114,20 @@ void lgfx_c_fill_rect_rgb888(lgfx_target_t target, int32_t left, int32_t top, in
     auto gfx = reinterpret_cast<LovyanGFX*>(target);
     gfx->fillRect(left, top, width, height, rgb888_t(color));
 }
+void lgfx_c_fill_rect_rgb565(lgfx_target_t target, int32_t left, int32_t top, int32_t width, int32_t height, uint16_t color) {
+    auto gfx = reinterpret_cast<LovyanGFX*>(target);
+    gfx->fillRect(left, top, width, height, rgb565_t(color));
+}
 
 void lgfx_c_draw_line_rgb332(lgfx_target_t target, int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint8_t color){
     auto gfx = reinterpret_cast<LovyanGFX*>(target);
     gfx->drawLine(x0, y0, x1, y1, color);
 }
 void lgfx_c_draw_line_rgb888(lgfx_target_t target, int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint32_t color){
+    auto gfx = reinterpret_cast<LovyanGFX*>(target);
+    gfx->drawLine(x0, y0, x1, y1, color);
+}
+void lgfx_c_draw_line_rgb565(lgfx_target_t target, int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint16_t color){
     auto gfx = reinterpret_cast<LovyanGFX*>(target);
     gfx->drawLine(x0, y0, x1, y1, color);
 }
@@ -126,6 +143,10 @@ void lgfx_c_push_image_rgb332(lgfx_target_t target, int32_t x, int32_t y, int32_
 void lgfx_c_push_image_rgb888(lgfx_target_t target, int32_t x, int32_t y, int32_t w, int32_t h, const uint8_t* data) {
     auto gfx = reinterpret_cast<LovyanGFX*>(target);
     gfx->pushImage(x, y, w, h, reinterpret_cast<const rgb888_t*>(data));
+}
+void lgfx_c_push_image_rgb565(lgfx_target_t target, int32_t x, int32_t y, int32_t w, int32_t h, const uint8_t* data) {
+    auto gfx = reinterpret_cast<LovyanGFX*>(target);
+    gfx->pushImage(x, y, w, h, reinterpret_cast<const rgb565_t*>(data));
 }
 
 bool lgfx_c_draw_png(lgfx_target_t target, const uint8_t *data, uint32_t len, int32_t x, int32_t y, int32_t maxWidth, int32_t maxHeight, int32_t offX, int32_t offY, float scale_x, float scale_y, ::textdatum_t datum) {
@@ -182,6 +203,10 @@ size_t lgfx_c_draw_char_rgb332(lgfx_target_t target, int32_t x, int32_t y, uint1
     return gfx->drawChar(x, y, unicode, color, bg, size_x, size_y);
 }
 size_t lgfx_c_draw_char_rgb888(lgfx_target_t target, int32_t x, int32_t y, uint16_t unicode, uint32_t color, uint32_t bg, float size_x, float size_y) {
+    auto gfx = reinterpret_cast<LovyanGFX*>(target);
+    return gfx->drawChar(x, y, unicode, color, bg, size_x, size_y);
+}
+size_t lgfx_c_draw_char_rgb565(lgfx_target_t target, int32_t x, int32_t y, uint16_t unicode, uint16_t color, uint16_t bg, float size_x, float size_y) {
     auto gfx = reinterpret_cast<LovyanGFX*>(target);
     return gfx->drawChar(x, y, unicode, color, bg, size_x, size_y);
 }

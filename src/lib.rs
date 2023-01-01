@@ -125,6 +125,9 @@ impl<'a> LgfxGuard<'a> {
     pub fn set_rotation(&mut self, rotation: u8) {
         unsafe { lgfx_c_set_rotation(self.target(), rotation ); }
     }
+    pub fn set_brightness(&mut self, brightness: u8) {
+        unsafe { lgfx_c_set_brightness(self.target(), brightness); }
+    }
 }
 
 impl<'a> LgfxTarget for LgfxGuard<'a> {

@@ -83,6 +83,7 @@ epd_mode_t lgfx_c_get_epd_mode(lgfx_target_t target);
 void lgfx_c_set_epd_mode(lgfx_target_t target, enum epd_mode epd_mode);
 bool lgfx_c_is_epd(lgfx_target_t target);
 void lgfx_c_set_rotation(lgfx_target_t target, uint_fast8_t rotation);
+void lgfx_c_set_brightness(lgfx_target_t target, uint_fast8_t brightness);
 
 int32_t lgfx_c_width(lgfx_target_t target);
 int32_t lgfx_c_height(lgfx_target_t target);
@@ -91,14 +92,18 @@ int32_t lgfx_c_font_height(lgfx_target_t target);
 
 void lgfx_c_clear_rgb332(lgfx_target_t target, uint8_t color);
 void lgfx_c_clear_rgb888(lgfx_target_t target, uint32_t color);
+void lgfx_c_clear_rgb565(lgfx_target_t target, uint16_t color);
 void lgfx_c_fill_rect_rgb332(lgfx_target_t target, int32_t left, int32_t top, int32_t width, int32_t height, uint8_t color);
 void lgfx_c_fill_rect_rgb888(lgfx_target_t target, int32_t left, int32_t top, int32_t width, int32_t height, uint32_t color);
+void lgfx_c_fill_rect_rgb565(lgfx_target_t target, int32_t left, int32_t top, int32_t width, int32_t height, uint16_t color);
 void lgfx_c_draw_line_rgb332(lgfx_target_t target, int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint8_t color);
 void lgfx_c_draw_line_rgb888(lgfx_target_t target, int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint32_t color);
+void lgfx_c_draw_line_rgb565(lgfx_target_t target, int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint16_t color);
 
 void lgfx_c_push_image_grayscale(lgfx_target_t target, int32_t x, int32_t y, int32_t w, int32_t h, const uint8_t* data);
 void lgfx_c_push_image_rgb332(lgfx_target_t target, int32_t x, int32_t y, int32_t w, int32_t h, const uint8_t* data);
 void lgfx_c_push_image_rgb888(lgfx_target_t target, int32_t x, int32_t y, int32_t w, int32_t h, const uint8_t* data);
+void lgfx_c_push_image_rgb565(lgfx_target_t target, int32_t x, int32_t y, int32_t w, int32_t h, const uint8_t* data);
 
 bool lgfx_c_draw_png(lgfx_target_t target, const uint8_t *data, uint32_t len, int32_t x, int32_t y, int32_t maxWidth, int32_t maxHeight, int32_t offX, int32_t offY, float scale_x, float scale_y, textdatum_t datum);
 
@@ -116,6 +121,7 @@ void lgfx_c_set_text_size(lgfx_target_t target, float sx, float sy);
 void lgfx_c_set_text_datum(lgfx_target_t target, textdatum_t datum);
 size_t lgfx_c_draw_char_rgb332(lgfx_target_t target, int32_t x, int32_t y, uint16_t unicode, uint8_t color, uint8_t bg, float size_x, float size_y);
 size_t lgfx_c_draw_char_rgb888(lgfx_target_t target, int32_t x, int32_t y, uint16_t unicode, uint32_t color, uint32_t bg, float size_x, float size_y);
+size_t lgfx_c_draw_char_rgb565(lgfx_target_t target, int32_t x, int32_t y, uint16_t unicode, uint16_t color, uint16_t bg, float size_x, float size_y);
 
 const void* lgfx_c_get_font(lgfx_target_t target);
 bool lgfx_c_set_font(lgfx_target_t target, const void* font);
