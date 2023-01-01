@@ -4,6 +4,8 @@ type MutexGuard<'a, T> = std::sync::MutexGuard<'a, T>;
 #[allow(unused)]
 #[allow(non_camel_case_types)]
 #[allow(non_upper_case_globals)]
+#[allow(unused_assignments)]
+#[allow(unused_mut)]
 mod lgfx_sys {
     include!(concat!(env!("OUT_DIR"), "/lgfx.rs"));
 

@@ -11,7 +11,8 @@
 #define LGFX_USE_V1
 #define LGFX_AUTODETECT
 #include <LovyanGFX.hpp>
-#include <stdint.h>
+
+#include "__stdint.h"
 
 #ifndef LGFX_SDL
 static LGFX GFX;
@@ -23,6 +24,7 @@ static alignas(LGFX) std::uint8_t gfx_storage[sizeof(LGFX)];
 using namespace lgfx::v1;
 
 #ifndef LGFX_SDL
+#define LGFX_SDL
 
 lgfx_target_t lgfx_c_setup(void) 
 {
@@ -209,3 +211,5 @@ bool lgfx_c_font_update_font_metrics(const void* font, font_metrics_t *metrics, 
     auto ifont = reinterpret_cast<const IFont*>(font);
     return ifont->updateFontMetric(reinterpret_cast<lgfx::v1::FontMetrics*>(metrics), unicode);
 }
+
+#include "__stdint_clean.h"

@@ -200,7 +200,7 @@ const LGFX_C_HEADER_PATH: &str = "lgfx_c/lgfx_c.h";
 fn main() -> anyhow::Result<()> {
     // Rebuild if LGFX C binding is changed.
     println!("cargo:rerun-if-changed={}", LGFX_C_HEADER_PATH);
-
+println!("------------- clang path: {} -----------------------", env::var("LIBCLANG_PATH").expect("LIBCLANG_PATH must be set"));
     let libclang_path = env::var("LIBCLANG_PATH").expect("LIBCLANG_PATH must be set");
     let libclang_include_path: PathBuf = [libclang_path.as_str(), "clang", "14.0.0", "include"].iter().collect();
     let bindings = bindgen::Builder::default()
