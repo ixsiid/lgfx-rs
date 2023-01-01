@@ -281,6 +281,27 @@ impl Color for ColorRgb888 {
     }
 }
 
+
+#[derive(Debug, Copy, Clone)]
+pub struct ColorRgb565 {
+    raw: u16,
+}
+impl ColorRgb565 {
+    pub fn new(raw: u16) -> Self {
+        Self { raw }
+    }
+}
+impl Color for ColorRgb565 {
+    fn as_u32(&self) -> u32 {
+        let r = (self.raw & 0b1111100000000000) << 3;
+        let g = (self.raw & 0b0000011111100000) << 2;
+        let b = (self.raw & 0b0000000000011111) << 3;
+        (((r | ((0u16.wrapping_sub((r >> 3) & 1)) & 0x07)) as u32) << 16)
+            | (((g | ((0u16.wrapping_sub((g >> 2) & 1)) & 0x03)) as u32) << 8)
+            | ((b | ((0u16.wrapping_sub((b >> 3) & 1)) & 0x07)) as u32)
+    }
+}
+
 pub trait Screen {
     fn size(&self) -> (i32, i32);
 }
@@ -336,6 +357,26 @@ where
     fn draw_line(&mut self, x0: i32, y0: i32, x1: i32, y1: i32, color: ColorRgb888) {
         unsafe {
             lgfx_c_draw_line_rgb888(self.target(), x0, y0, x1, y1, color.raw);
+        }
+    }
+}
+impl<Target> DrawPrimitives<ColorRgb565> for Target
+where
+    Target: LgfxTarget,
+{
+    fn clear(&mut self, color: ColorRgb565) {
+        unsafe {
+            lgfx_c_clear_rgb565(self.target(), color.raw);
+        }
+    }
+    fn fill_rect(&mut self, x: i32, y: i32, w: i32, h: i32, color: ColorRgb565) {
+        unsafe {
+            lgfx_c_fill_rect_rgb565(self.target(), x, y, w, h, color.raw);
+        }
+    }
+    fn draw_line(&mut self, x0: i32, y0: i32, x1: i32, y1: i32, color: ColorRgb565) {
+        unsafe {
+            lgfx_c_draw_line_rgb565(self.target(), x0, y0, x1, y1, color.raw);
         }
     }
 }
@@ -443,6 +484,59 @@ where
         width += if encoded.len() >= 2 {
             unsafe {
                 lgfx_c_draw_char_rgb888(
+                    self.target(),
+                    x,
+                    y,
+                    encoded[1],
+                    fg.raw,
+                    bg.raw,
+                    size_x,
+                    size_y,
+                ) as i32
+            }
+        } else {
+            0
+        };
+        width
+    }
+}
+impl<Target> DrawChar<ColorRgb565> for Target
+where
+    Target: LgfxTarget,
+{
+    fn draw_char(
+        &self,
+        c: char,
+        x: i32,
+        y: i32,
+        fg: ColorRgb565,
+        bg: ColorRgb565,
+        size_x: f32,
+        size_y: f32,
+    ) -> i32 {
+        let mut buf = [0u16; 2];
+        let encoded = c.encode_utf16(&mut buf);
+        let mut width = 0;
+
+        width += if encoded.len() >= 1 {
+            unsafe {
+                lgfx_c_draw_char_rgb565(
+                    self.target(),
+                    x,
+                    y,
+                    encoded[0],
+                    fg.raw,
+                    bg.raw,
+                    size_x,
+                    size_y,
+                ) as i32
+            }
+        } else {
+            0
+        };
+        width += if encoded.len() >= 2 {
+            unsafe {
+                lgfx_c_draw_char_rgb565(
                     self.target(),
                     x,
                     y,
