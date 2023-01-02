@@ -149,6 +149,20 @@ void lgfx_c_push_image_rgb565(lgfx_target_t target, int32_t x, int32_t y, int32_
     gfx->pushImage(x, y, w, h, reinterpret_cast<const rgb565_t*>(data));
 }
 
+
+void lgfx_c_set_text_color_rgb888(lgfx_target_t target, uint32_t fore, uint32_t back) {
+    auto gfx = reinterpret_cast<LovyanGFX*>(target);
+    gfx->setTextColor(fore, back);
+}
+void lgfx_c_set_text_color_rgb565(lgfx_target_t target, uint16_t fore, uint16_t back) {
+    auto gfx = reinterpret_cast<LovyanGFX*>(target);
+    gfx->setTextColor(fore, back);
+}
+void lgfx_c_set_text_color_rgb332(lgfx_target_t target, uint8_t fore, uint8_t back) {
+    auto gfx = reinterpret_cast<LovyanGFX*>(target);
+    gfx->setTextColor(fore, back);
+}
+
 bool lgfx_c_draw_png(lgfx_target_t target, const uint8_t *data, uint32_t len, int32_t x, int32_t y, int32_t maxWidth, int32_t maxHeight, int32_t offX, int32_t offY, float scale_x, float scale_y, ::textdatum_t datum) {
     auto gfx = reinterpret_cast<LovyanGFX*>(target);
     return gfx->drawPng(data, len, x, y, maxWidth, maxHeight, offX, offY, scale_x, scale_y, static_cast<datum_t>(datum));

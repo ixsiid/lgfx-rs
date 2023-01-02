@@ -123,6 +123,10 @@ size_t lgfx_c_draw_char_rgb332(lgfx_target_t target, int32_t x, int32_t y, uint1
 size_t lgfx_c_draw_char_rgb888(lgfx_target_t target, int32_t x, int32_t y, uint16_t unicode, uint32_t color, uint32_t bg, float size_x, float size_y);
 size_t lgfx_c_draw_char_rgb565(lgfx_target_t target, int32_t x, int32_t y, uint16_t unicode, uint16_t color, uint16_t bg, float size_x, float size_y);
 
+void lgfx_c_set_text_color_rgb888(lgfx_target_t target, uint32_t fore, uint32_t back);
+void lgfx_c_set_text_color_rgb565(lgfx_target_t target, uint16_t fore, uint16_t back);
+void lgfx_c_set_text_color_rgb332(lgfx_target_t target, uint8_t fore, uint8_t back);
+
 const void* lgfx_c_get_font(lgfx_target_t target);
 bool lgfx_c_set_font(lgfx_target_t target, const void* font);
 void lgfx_c_font_get_default_metrics(const void* font, font_metrics_t *metrics);

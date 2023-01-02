@@ -6,6 +6,7 @@ type MutexGuard<'a, T> = std::sync::MutexGuard<'a, T>;
 #[allow(non_upper_case_globals)]
 #[allow(unused_assignments)]
 #[allow(unused_mut)]
+
 mod lgfx_sys {
     include!(concat!(env!("OUT_DIR"), "/lgfx.rs"));
 
@@ -39,6 +40,7 @@ pub use lgfx_sys::textdatum_bottom_center;
 pub use lgfx_sys::textdatum_bottom_centre;
 pub use lgfx_sys::textdatum_bottom_right;
 pub use lgfx_sys::font_metrics_t;
+
 
 #[derive(Debug)]
 pub enum EpdMode {
@@ -127,6 +129,12 @@ impl<'a> LgfxGuard<'a> {
     }
     pub fn set_brightness(&mut self, brightness: u8) {
         unsafe { lgfx_c_set_brightness(self.target(), brightness); }
+    }
+    pub fn write(&mut self, text: &str) {
+        unsafe { lgfx_c_write(self.target(), text.as_ptr(), text.len() as u32); }
+    }
+    pub fn set_cursor(&mut self, x: i32, y: i32) {
+        unsafe { lgfx_c_set_cursor(self.target(), x, y); }
     }
 }
 
@@ -318,6 +326,7 @@ pub trait DrawPrimitives<C: Color> {
     fn clear(&mut self, color: C);
     fn fill_rect(&mut self, x: i32, y: i32, w: i32, h: i32, color: C);
     fn draw_line(&mut self, x0: i32, y0: i32, x1: i32, y1: i32, color: C);
+    fn set_text_color(&mut self, fore: C, back: C);
 }
 
 impl<Target> DrawPrimitives<ColorRgb332> for Target
@@ -339,6 +348,9 @@ where
             lgfx_c_draw_line_rgb332(self.target(), x0, y0, x1, y1, color.raw);
         }
     }
+    fn set_text_color(&mut self, fore: ColorRgb332, back: ColorRgb332) {
+        unsafe { lgfx_c_set_text_color_rgb332(self.target(), fore.raw, back.raw); }
+    }
 }
 impl<Target> DrawPrimitives<ColorRgb888> for Target
 where
@@ -359,6 +371,9 @@ where
             lgfx_c_draw_line_rgb888(self.target(), x0, y0, x1, y1, color.raw);
         }
     }
+    fn set_text_color(&mut self, fore: ColorRgb888, back: ColorRgb888) {
+        unsafe { lgfx_c_set_text_color_rgb888(self.target(), fore.raw, back.raw); }
+    }
 }
 impl<Target> DrawPrimitives<ColorRgb565> for Target
 where
@@ -378,6 +393,9 @@ where
         unsafe {
             lgfx_c_draw_line_rgb565(self.target(), x0, y0, x1, y1, color.raw);
         }
+    }
+    fn set_text_color(&mut self, fore: ColorRgb565, back: ColorRgb565) {
+        unsafe { lgfx_c_set_text_color_rgb565(self.target(), fore.raw, back.raw); }
     }
 }
 
